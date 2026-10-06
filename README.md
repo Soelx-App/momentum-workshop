@@ -57,7 +57,9 @@ Os dois projetos Vercel e backends de produção já foram provisionados. Cada p
 
 O código e as branches `main`, `alpha` e `beta` já estão publicados. Os dois projetos Vercel estão conectados ao GitHub, e os sites já receberam o primeiro deploy de produção. Os [PRs de teste Alpha](https://github.com/Soelx-App/momentum-workshop/pull/1) e [Beta](https://github.com/Soelx-App/momentum-workshop/pull/2) comprovaram os Previews automáticos e a separação dos bancos; não faça merge desses PRs de validação.
 
-**Pendência do responsável antes dos merges dos times:** na Vercel, abra Environments, Production e Branch Tracking. Defina `alpha` no [projeto Alpha](https://vercel.com/lemesdev/momentum-workshop-alpha/settings/environments) e `beta` no [projeto Beta](https://vercel.com/lemesdev/momentum-workshop-beta/settings/environments). Os dois projetos ainda acompanham `main` como Production Branch. Não publique mudanças em `main` após essa configuração esperando atualizar os times. Production Branch exige essa ação no dashboard; não há campo oficial na API pública para alterá-la.
+O Branch Tracking já está configurado. O [projeto Alpha](https://vercel.com/lemesdev/momentum-workshop-alpha/settings/environments) acompanha `alpha`, e o [projeto Beta](https://vercel.com/lemesdev/momentum-workshop-beta/settings/environments) acompanha `beta`. Mudanças em `main` não atualizam as produções dos times.
+
+A configuração inicial usou pelo CLI o [endpoint do dashboard permitido pela Vercel](https://community.vercel.com/t/rest-api-docs-for-updating-production-git-branch/820), que não é garantido como API pública. Os deploys normais usam a integração Git da Vercel e o CLI oficial do Convex, sem depender desse endpoint.
 
 O build oficial é `pnpm exec convex deploy --cmd 'pnpm build' --cmd-url-env-var-name NEXT_PUBLIC_CONVEX_URL`. Não requer workflow de deploy no GitHub, integração Marketplace ou ambientes extras.
 
