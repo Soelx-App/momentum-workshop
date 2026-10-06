@@ -45,4 +45,6 @@ O build oficial é `pnpm exec convex deploy --cmd 'pnpm build' --cmd-url-env-var
 
 O [Vercel Hobby](https://vercel.com/docs/plans/hobby) permite apenas uso pessoal não comercial. Um repositório público não remove essa restrição; confirme que o workshop se enquadra antes de usar o plano gratuito.
 
+Antes do workshop, confirme que um commit de aluno em uma branch deste repositório dispara o Preview automaticamente. A [documentação de Git](https://vercel.com/docs/git#deploying-private-git-repositories) separa repositórios públicos da restrição de autor no Hobby, mas um [artigo da Vercel](https://vercel.com/kb/guide/why-aren-t-commits-triggering-deployments-on-vercel#hobby-plans-enforce-collaboration-limits) afirma a restrição sem essa exceção. Mantenha Git Fork Protection habilitado.
+
 Referências: [Convex + Vercel](https://docs.convex.dev/production/hosting/vercel) e [Convex Preview Deployments](https://docs.convex.dev/production/hosting/preview-deployments).
