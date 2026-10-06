@@ -43,4 +43,6 @@ Configuração única do responsável:
 
 O build oficial é `pnpm exec convex deploy --cmd 'pnpm build' --cmd-url-env-var-name NEXT_PUBLIC_CONVEX_URL`. Não requer workflow de deploy no GitHub, integração Marketplace ou ambientes extras.
 
+O [Vercel Hobby](https://vercel.com/docs/plans/hobby) permite apenas uso pessoal não comercial. Um repositório público não remove essa restrição; confirme que o workshop se enquadra antes de usar o plano gratuito.
+
 Referências: [Convex + Vercel](https://docs.convex.dev/production/hosting/vercel) e [Convex Preview Deployments](https://docs.convex.dev/production/hosting/preview-deployments).
