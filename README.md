@@ -2,6 +2,8 @@
 
 Base mínima com Next.js, TypeScript, pnpm e Convex. Use Node.js 22 e pnpm 10 (`npm install -g pnpm@10.34.6`).
 
+Sites dos times: [Alpha](https://momentum-workshop-alpha.vercel.app) e [Beta](https://momentum-workshop-beta.vercel.app). Cada site tem seu próprio banco de produção.
+
 ## Começar
 
 ```bash
@@ -37,7 +39,7 @@ Cada pessoa usa seu próprio backend de desenvolvimento. O plano Free permite at
 | Alpha | `alpha` | `momentum-workshop-alpha` | `alpha` (`cheerful-weasel-405`) |
 | Beta | `beta` | `momentum-workshop-beta` | `beta` (`laudable-lynx-684`) |
 
-Depois de conectar o Git e configurar Branch Tracking na Vercel, merge em `alpha` publica Alpha; merge em `beta` publica Beta. Aprovar o PR sem merge não dispara deploy. As outras branches geram Vercel Previews com Convex Previews isolados por branch, sem alterar os bancos de produção. Novos commits da mesma branch reutilizam seu banco Preview; no Convex Free, previews expiram após cinco dias. PRs de forks podem exigir aprovação na Vercel.
+Depois de conectar o Git e configurar Branch Tracking na Vercel, merge em `alpha` publica Alpha; merge em `beta` publica Beta. Aprovar o PR sem merge não dispara deploy. As outras branches geram Vercel Previews com Convex Previews isolados por branch, sem alterar os bancos de produção. Use no commit um email associado à sua conta GitHub, inclusive o endereço `noreply` fornecido pelo GitHub. Novos commits da mesma branch reutilizam seu banco Preview; no Convex Free, previews expiram após cinco dias. PRs de forks podem exigir aprovação na Vercel.
 
 ## Antes de abrir PR
 
@@ -53,7 +55,9 @@ Local usa o backend de desenvolvimento de cada pessoa. Preview usa o Convex Prev
 
 Os dois projetos Vercel e backends de produção já foram provisionados. Cada projeto Vercel tem `CONVEX_DEPLOY_KEY` da produção correspondente **somente em Production**, com permissão `deployment:deploy`, e a Preview Deploy Key oficial **somente em Preview**. Next.js, Node.js 22, instalação, build e variáveis de sistema já estão configurados; não fixe `NEXT_PUBLIC_CONVEX_URL` ou `CONVEX_DEPLOYMENT` no dashboard.
 
-Para ativar os deploys, publique a base e as branches `alpha`/`beta` com autorização do responsável. Em cada projeto Vercel, conecte `Soelx-App/momentum-workshop` na seção Git de Settings. Na seção Environments, abra Production e Branch Tracking. Defina `alpha` no projeto Alpha e `beta` no projeto Beta **antes de começar os merges dos times**. Production Branch exige essa configuração no dashboard; não há campo oficial na API pública para alterá-la. Mantenha os deploys Git automáticos habilitados.
+O código e as branches `main`, `alpha` e `beta` já estão publicados. Os dois projetos Vercel estão conectados ao GitHub, e os sites já receberam o primeiro deploy de produção. Os [PRs de teste Alpha](https://github.com/Soelx-App/momentum-workshop/pull/1) e [Beta](https://github.com/Soelx-App/momentum-workshop/pull/2) comprovaram os Previews automáticos e a separação dos bancos; não faça merge desses PRs de validação.
+
+**Pendência do responsável antes dos merges dos times:** na Vercel, abra Environments, Production e Branch Tracking. Defina `alpha` no [projeto Alpha](https://vercel.com/lemesdev/momentum-workshop-alpha/settings/environments) e `beta` no [projeto Beta](https://vercel.com/lemesdev/momentum-workshop-beta/settings/environments). Os dois projetos ainda acompanham `main` como Production Branch. Não publique mudanças em `main` após essa configuração esperando atualizar os times. Production Branch exige essa ação no dashboard; não há campo oficial na API pública para alterá-la.
 
 O build oficial é `pnpm exec convex deploy --cmd 'pnpm build' --cmd-url-env-var-name NEXT_PUBLIC_CONVEX_URL`. Não requer workflow de deploy no GitHub, integração Marketplace ou ambientes extras.
 

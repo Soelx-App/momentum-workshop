@@ -18,4 +18,5 @@ Leia o README antes de executar o projeto. Use Node.js 22 e pnpm 10.
 - Confirme a leitura e a escrita pelo contador no navegador, inclusive após recarregar. Se a mutation ficar pendente, confira a conexão com o backend e os logs do processo de desenvolvimento.
 - Execute `pnpm check` antes de entregar. Não rode `convex deploy` como teste. O destino pode ser produção.
 - Os PRs dos times têm como base `alpha` ou `beta`. Cada branch tem seu próprio projeto Vercel e backend Convex de produção. `main` mantém a base do workshop; não trate `main` como produção dos times.
+- Use nos commits um email associado à conta GitHub de quem está trabalhando, ou o endereço `noreply` dessa mesma conta. Commits sem autor reconhecido podem impedir o deploy. Não altere a identidade global do Git nem reescreva commits antigos para corrigir isso.
 - Não versione `.env.local`, credenciais ou artefatos de build. Não publique commits sem autorização.
