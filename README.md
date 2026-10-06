@@ -19,18 +19,25 @@ Mantenha esse terminal aberto enquanto usar o app. Abra http://localhost:3000, o
 
 Na primeira execução, o CLI configura o backend e cria `.env.local`. Escolha desenvolvimento local sem conta, ou faça login e selecione um projeto de desenvolvimento da sua equipe. Não use produção nem copie deploy keys para sua máquina. Nas próximas execuções, basta `pnpm dev`, que inicia Next.js e Convex juntos.
 
-Cada pessoa usa seu próprio backend de desenvolvimento. O plano Free permite até seis desenvolvedores por organização; para dois times de quatro com acesso ao dashboard, use uma organização gratuita por time. Isso não muda os previews do repositório.
+Cada pessoa usa seu próprio backend de desenvolvimento. O plano Free permite até seis desenvolvedores por organização; para dois times de quatro com acesso ao dashboard, use uma organização gratuita por time. Os deployments centrais de Alpha e Beta continuam no projeto `momentum-workshop` da organização `davi-lemes`.
 
 ## Para agentes
 
 - Leia `AGENTS.md`. Use Node.js 22, instale com `pnpm install` e inicie tudo com `pnpm dev` na raiz do repositório. Não suba Next.js e Convex separadamente.
 - Antes de iniciar outro processo, verifique se o app já está rodando. Para testes de navegador, mantenha o processo ativo e informe a URL ao usuário. Não encerre o servidor após validar se o usuário ainda for testar.
-- Teste o botão Incrementar e recarregue a página para confirmar a gravação. Se ficar em "Gravando...", confira os logs e a conexão com o backend: o Convex pode aguardar reconexão sem rejeitar a mutation. No modo local, encerrar `pnpm dev` também encerra o backend.
+- Teste o botão Incrementar e recarregue a página para confirmar a gravação. Se ficar em "Gravando...", confira os logs e a conexão com o backend. O Convex pode aguardar reconexão sem rejeitar a mutation. No modo local, encerrar `pnpm dev` também encerra o backend.
 - Execute `pnpm check` antes de entregar. Não use `convex deploy` para validar desenvolvimento; esse comando pode publicar em produção. Nunca versione `.env.local` nem deploy keys.
 
 ## Branches
 
-`main` é produção. Crie branches de feature normalmente, por exemplo `time-1/contador` e `time-2/contador`. Após a configuração da Vercel, cada branch enviada ao GitHub gera um Preview da Vercel conectado ao Convex Preview da mesma branch, com banco separado. Novos commits da mesma branch reutilizam esse banco; no plano Free, o Convex expira previews após cinco dias. PRs de forks podem exigir aprovação do responsável na Vercel.
+`main` mantém a base do workshop. Cada time desenvolve a partir de sua branch e abre PRs para ela:
+
+| Time | Branch de produção | Projeto Vercel | Convex Production |
+|---|---|---|---|
+| Alpha | `alpha` | `momentum-workshop-alpha` | `alpha` (`cheerful-weasel-405`) |
+| Beta | `beta` | `momentum-workshop-beta` | `beta` (`laudable-lynx-684`) |
+
+Depois de conectar o Git e configurar Branch Tracking na Vercel, merge em `alpha` publica Alpha; merge em `beta` publica Beta. Aprovar o PR sem merge não dispara deploy. As outras branches geram Vercel Previews com Convex Previews isolados por branch, sem alterar os bancos de produção. Novos commits da mesma branch reutilizam seu banco Preview; no Convex Free, previews expiram após cinco dias. PRs de forks podem exigir aprovação na Vercel.
 
 ## Antes de abrir PR
 
@@ -42,13 +49,11 @@ Executa TypeScript, lint e build, sem fazer deploy. `pnpm build` executa apenas 
 
 ## Deploy
 
-Local usa o backend de desenvolvimento de cada pessoa. Preview usa um backend Convex isolado por branch; o CLI injeta sua URL no build do frontend. Merge em `main` usa o deployment de produção separado, sem copiar dados dos previews.
+Local usa o backend de desenvolvimento de cada pessoa. Preview usa o Convex Preview da branch, e o CLI injeta sua URL no build do frontend. Produção usa o backend permanente do time, sem copiar dados de previews nem do outro time.
 
-Configuração única do responsável:
+Os dois projetos Vercel e backends de produção já foram provisionados. Cada projeto Vercel tem `CONVEX_DEPLOY_KEY` da produção correspondente **somente em Production**, com permissão `deployment:deploy`, e a Preview Deploy Key oficial **somente em Preview**. Next.js, Node.js 22, instalação, build e variáveis de sistema já estão configurados; não fixe `NEXT_PUBLIC_CONVEX_URL` ou `CONVEX_DEPLOYMENT` no dashboard.
 
-- Convex: no projeto `momentum-workshop` da organização `davi-lemes`, crie ou selecione **Production** e gere uma Production Deploy Key com `deployment:deploy`. Em Project Settings, gere uma **Preview Deploy Key**.
-- Vercel: importe este repositório público em `lemesdev` (Hobby), com raiz `.`, framework Next.js, Node.js 22 e Production Branch `main`. Mantenha os deploys Git automáticos e a exposição de variáveis de sistema habilitados. `vercel.json` já define instalação e build.
-- Vercel: cadastre `CONVEX_DEPLOY_KEY` duas vezes, Production Key **somente em Production** e Preview Key **somente em Preview**, para todas as branches. Não cadastre em Development e não fixe `NEXT_PUBLIC_CONVEX_URL` ou `CONVEX_DEPLOYMENT` no dashboard.
+Para ativar os deploys, publique a base e as branches `alpha`/`beta` com autorização do responsável. Em cada projeto Vercel, conecte `Soelx-App/momentum-workshop` na seção Git de Settings. Na seção Environments, abra Production e Branch Tracking. Defina `alpha` no projeto Alpha e `beta` no projeto Beta **antes de começar os merges dos times**. Production Branch exige essa configuração no dashboard; não há campo oficial na API pública para alterá-la. Mantenha os deploys Git automáticos habilitados.
 
 O build oficial é `pnpm exec convex deploy --cmd 'pnpm build' --cmd-url-env-var-name NEXT_PUBLIC_CONVEX_URL`. Não requer workflow de deploy no GitHub, integração Marketplace ou ambientes extras.
 

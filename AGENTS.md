@@ -16,5 +16,6 @@ Leia o README antes de executar o projeto. Use Node.js 22 e pnpm 10.
 - Na raiz, `pnpm dev` inicia Convex e Next.js juntos. `npm run dev` executa o mesmo script. Não inicie os serviços separadamente.
 - Reutilize um servidor existente quando possível. Se iniciar o servidor para testes do usuário, mantenha-o ativo e informe a URL. Não o encerre ao terminar a validação sem avisar o usuário.
 - Confirme a leitura e a escrita pelo contador no navegador, inclusive após recarregar. Se a mutation ficar pendente, confira a conexão com o backend e os logs do processo de desenvolvimento.
-- Execute `pnpm check` antes de entregar. Não rode `convex deploy` como teste: o destino pode ser produção.
+- Execute `pnpm check` antes de entregar. Não rode `convex deploy` como teste. O destino pode ser produção.
+- Os PRs dos times têm como base `alpha` ou `beta`. Cada branch tem seu próprio projeto Vercel e backend Convex de produção. `main` mantém a base do workshop; não trate `main` como produção dos times.
 - Não versione `.env.local`, credenciais ou artefatos de build. Não publique commits sem autorização.
