@@ -11,13 +11,22 @@ pnpm install
 pnpm dev
 ```
 
-Abra http://localhost:3000. O contador comprova leitura e escrita no Convex.
+**`pnpm dev` sobe tudo: Convex e Next.js, no mesmo terminal.** `npm run dev` executa o mesmo script, caso prefira esse comando. Instale dependências com pnpm; não execute `npm install`.
+
+Mantenha esse terminal aberto enquanto usar o app. Abra http://localhost:3000, ou a URL exibida pelo Next.js. O contador comprova leitura e escrita no Convex.
 
 ## Convex
 
 Na primeira execução, o CLI configura o backend e cria `.env.local`. Escolha desenvolvimento local sem conta, ou faça login e selecione um projeto de desenvolvimento da sua equipe. Não use produção nem copie deploy keys para sua máquina. Nas próximas execuções, basta `pnpm dev`, que inicia Next.js e Convex juntos.
 
 Cada pessoa usa seu próprio backend de desenvolvimento. O plano Free permite até seis desenvolvedores por organização; para dois times de quatro com acesso ao dashboard, use uma organização gratuita por time. Isso não muda os previews do repositório.
+
+## Para agentes
+
+- Leia `AGENTS.md`. Use Node.js 22, instale com `pnpm install` e inicie tudo com `pnpm dev` na raiz do repositório. Não suba Next.js e Convex separadamente.
+- Antes de iniciar outro processo, verifique se o app já está rodando. Para testes de navegador, mantenha o processo ativo e informe a URL ao usuário. Não encerre o servidor após validar se o usuário ainda for testar.
+- Teste o botão Incrementar e recarregue a página para confirmar a gravação. Se ficar em "Gravando...", confira os logs e a conexão com o backend: o Convex pode aguardar reconexão sem rejeitar a mutation. No modo local, encerrar `pnpm dev` também encerra o backend.
+- Execute `pnpm check` antes de entregar. Não use `convex deploy` para validar desenvolvimento; esse comando pode publicar em produção. Nunca versione `.env.local` nem deploy keys.
 
 ## Branches
 
