@@ -8,7 +8,13 @@
  * @module
  */
 
-import type * as counter from "../counter.js";
+import type * as crons from "../crons.js";
+import type * as estados from "../estados.js";
+import type * as lib_acesso from "../lib/acesso.js";
+import type * as participantes from "../participantes.js";
+import type * as perguntas from "../perguntas.js";
+import type * as regras from "../regras.js";
+import type * as sessoes from "../sessoes.js";
 
 import type {
   ApiFromModules,
@@ -17,7 +23,13 @@ import type {
 } from "convex/server";
 
 declare const fullApi: ApiFromModules<{
-  counter: typeof counter;
+  crons: typeof crons;
+  estados: typeof estados;
+  "lib/acesso": typeof lib_acesso;
+  participantes: typeof participantes;
+  perguntas: typeof perguntas;
+  regras: typeof regras;
+  sessoes: typeof sessoes;
 }>;
 
 /**

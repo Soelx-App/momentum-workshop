@@ -15,7 +15,21 @@ pnpm dev
 
 **`pnpm dev` sobe tudo: Convex e Next.js, no mesmo terminal.** `npm run dev` executa o mesmo script, caso prefira esse comando. Instale dependências com pnpm; não execute `npm install`.
 
-Mantenha esse terminal aberto enquanto usar o app. Abra http://localhost:3000, ou a URL exibida pelo Next.js. O contador comprova leitura e escrita no Convex.
+Mantenha esse terminal aberto enquanto usar o app. Abra http://localhost:3000, ou a URL exibida pelo Next.js. O Pulse comprova leitura e escrita no Convex.
+
+## Pulse — roteiro de teste
+
+O Pulse acompanha uma sala ao vivo: perguntas com votos e o estado de cada participante.
+
+1. Abra o site e, em **Organizador**, informe seu nome e o nome da sessão. Clique em **Criar sessão**.
+2. No painel, copie o **link dos participantes** ou anote o **código** de 6 caracteres.
+3. Em outro navegador ou janela anônima, entre como **Participante** pelo código. Em uma terceira janela, entre pelo link.
+4. Envie uma pergunta. Na outra janela, clique em **Votar** e depois em **Votado ✓** para retirar o voto. O ranking muda ao vivo.
+5. Escolha um estado (por exemplo, **Dúvida**). O organizador vê a mudança na hora, e o estado volta para **Acompanhando** após 1 minuto.
+6. No painel, clique em **Marcar respondida**. A pergunta sai da lista de todos e aparece em **Respondidas**.
+7. Clique em **Encerrar sessão** e confirme. A sessão fica somente leitura. Ela também se encerra sozinha após 2 horas sem atividade.
+
+O **link de administração** do painel abre o painel em outro aparelho. Não o compartilhe.
 
 ## Convex
 
@@ -27,7 +41,7 @@ Cada pessoa usa seu próprio backend de desenvolvimento. O plano Free permite at
 
 - Leia `AGENTS.md`. Use Node.js 22, instale com `pnpm install` e inicie tudo com `pnpm dev` na raiz do repositório. Não suba Next.js e Convex separadamente.
 - Antes de iniciar outro processo, verifique se o app já está rodando. Para testes de navegador, mantenha o processo ativo e informe a URL ao usuário. Não encerre o servidor após validar se o usuário ainda for testar.
-- Teste o botão Incrementar e recarregue a página para confirmar a gravação. Se ficar em "Gravando...", confira os logs e a conexão com o backend. O Convex pode aguardar reconexão sem rejeitar a mutation. No modo local, encerrar `pnpm dev` também encerra o backend.
+- Valide pelo roteiro do Pulse: crie uma sessão, entre como participante, envie uma pergunta e recarregue a página para confirmar a gravação. Se um botão ficar em "Enviando..." ou "Entrando...", confira os logs e a conexão com o backend. O Convex pode aguardar reconexão sem rejeitar a mutation. No modo local, encerrar `pnpm dev` também encerra o backend.
 - Execute `pnpm check` antes de entregar. Não use `convex deploy` para validar desenvolvimento; esse comando pode publicar em produção. Nunca versione `.env.local` nem deploy keys.
 
 ## Branches
