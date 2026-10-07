@@ -1,38 +1,19 @@
-"use client";
-
-import { useMutation, useQuery } from "convex/react";
-import { useState } from "react";
-import { api } from "../convex/_generated/api";
+import { FormCriarSessao } from "@/components/pulse/form-criar-sessao";
+import { FormEntrar } from "@/components/pulse/form-entrar";
 
 export default function Home() {
-  const count = useQuery(api.counter.get);
-  const increment = useMutation(api.counter.increment);
-  const [pending, setPending] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
-  async function handleIncrement() {
-    setPending(true);
-    setError(null);
-    try {
-      await increment({});
-    } catch {
-      setError("Não foi possível gravar no Convex. Tente novamente.");
-    } finally {
-      setPending(false);
-    }
-  }
-
   return (
-    <main>
-      <h1>Momentum workshop</h1>
-      <p>Next.js + Convex. Apenas um exemplo de conexão.</p>
-      <p aria-live="polite">
-        {count === undefined ? "Conectando ao Convex..." : `Contador no Convex: ${count}`}
-      </p>
-      <button onClick={handleIncrement} disabled={count === undefined || pending}>
-        {pending ? "Gravando..." : "Incrementar"}
-      </button>
-      {error && <p role="alert">{error}</p>}
+    <main className="mx-auto max-w-4xl space-y-8 px-4 py-10">
+      <header className="space-y-2 text-center">
+        <h1 className="text-3xl font-bold">Pulse</h1>
+        <p className="text-muted-foreground">
+          Perguntas, votos e o clima da sala, ao vivo.
+        </p>
+      </header>
+      <div className="grid gap-6 md:grid-cols-2">
+        <FormCriarSessao />
+        <FormEntrar />
+      </div>
     </main>
   );
 }
