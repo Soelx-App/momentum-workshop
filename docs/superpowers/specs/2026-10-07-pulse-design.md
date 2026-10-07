@@ -202,3 +202,17 @@ As páginas usam componentes cliente com `useQuery` e `useMutation` e CSS própr
 - **PR:** de `feat/pulse` para `alpha`, testado no Vercel Preview. Commits e push só com autorização.
 - **README:** ganha a seção "Pulse — roteiro de teste" com o roteiro do critério de entrega.
 - **Verificação:** `pnpm check` passa antes da entrega. `convex deploy` nunca é usado como teste.
+
+## Atualização — requisitos consolidados (07/10/2026)
+
+Estas regras complementam ou substituem as seções anteriores:
+
+- **Interface:** usar **shadcn/ui + Tailwind CSS v4** (componentes Radix copiados para `components/ui/`). Isso substitui "CSS próprio em `globals.css`" e "sem dependências de runtime novas".
+- **Encerramento e estados:**
+  - Encerrar a sessão interrompe as mudanças automáticas de estado. `expirarEstado` não altera participantes de sessões encerradas.
+  - Na interface, o estado efetivo fica congelado no instante `encerradaEm`. Expirações já vencidas nesse instante aparecem como Acompanhando, e não há contagem regressiva.
+- **Nova participação:** sem token válido, uma nova entrada cria outra participação, mesmo com nome igual. O nome não recupera identidade.
+- **Nomes:** valores compostos só de espaços são rejeitados na interface e no servidor.
+- **Respondida após encerramento:** é rejeitada.
+- **Atividade:** a expiração automática de estado não conta como atividade.
+- **Tabela `counters`:** o código do contador é removido. A definição da tabela fica no schema, marcada como legado, para que o push do schema não falhe em deployments que já têm documentos nela (por exemplo, a produção Alpha).
