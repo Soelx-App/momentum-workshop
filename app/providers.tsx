@@ -10,7 +10,7 @@ export function ConvexClientProvider({ children }: { children: ReactNode }) {
   if (!convex) {
     return (
       <main>
-        <h1>Momentum workshop</h1>
+        <h1>Pulse</h1>
         <p>Execute <code>pnpm dev</code> para configurar o Convex.</p>
       </main>
     );
