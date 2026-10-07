@@ -1,4 +1,5 @@
 import { v, type Infer } from "convex/values";
+import { ESTADO_DURACAO_MS } from "./regras";
 
 export const estadoValidator = v.union(
   v.literal("acompanhando"),
@@ -58,5 +59,5 @@ export function segundosRestantes(
 ): number | null {
   if (sessao.status === "encerrada" || p.estadoExpiraEm === undefined) return null;
   if (estadoEfetivo(p, agora) === ESTADO_PADRAO) return null;
-  return Math.ceil((p.estadoExpiraEm - agora) / 1000);
+  return Math.min(ESTADO_DURACAO_MS / 1000, Math.ceil((p.estadoExpiraEm - agora) / 1000));
 }

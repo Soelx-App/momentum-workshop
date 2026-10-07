@@ -56,6 +56,10 @@ describe("segundosRestantes", () => {
     expect(segundosRestantes({ estado: "feliz", estadoExpiraEm: 60_000 }, aberta, 500)).toBe(60);
   });
 
+  test("não passa de 60 quando o relógio do cliente está atrasado", () => {
+    expect(segundosRestantes({ estado: "feliz", estadoExpiraEm: 60_000 }, aberta, -500)).toBe(60);
+  });
+
   test("sem contagem para acompanhando, expirado ou sessão encerrada", () => {
     expect(segundosRestantes({ estado: "acompanhando" }, aberta, 0)).toBeNull();
     expect(segundosRestantes({ estado: "feliz", estadoExpiraEm: 10 }, aberta, 10)).toBeNull();

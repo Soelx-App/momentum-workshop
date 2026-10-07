@@ -13,13 +13,14 @@ function chave(papel: Papel, codigo: string) {
 
 function lerToken(papel: Papel, codigo: string): string | null {
   const k = chave(papel, codigo);
+  const recente = memoria.get(k);
+  if (recente !== undefined) return recente;
   try {
-    const salvo = window.localStorage.getItem(k);
-    if (salvo !== null) return salvo;
+    return window.localStorage.getItem(k);
   } catch {
-    // Armazenamento indisponível (modo privado, bloqueio): usa a memória.
+    // Armazenamento indisponível (modo privado, bloqueio): só a memória vale.
+    return null;
   }
-  return memoria.get(k) ?? null;
 }
 
 export function salvarToken(papel: Papel, codigo: string, token: string): void {
@@ -36,9 +37,11 @@ export function salvarToken(papel: Papel, codigo: string, token: string): void {
 function assinar(avisar: () => void) {
   ouvintes.add(avisar);
   window.addEventListener("storage", avisar);
+  window.addEventListener("hashchange", avisar);
   return () => {
     ouvintes.delete(avisar);
     window.removeEventListener("storage", avisar);
+    window.removeEventListener("hashchange", avisar);
   };
 }
 
@@ -50,16 +53,30 @@ export function useTokenSalvo(papel: Papel, codigo: string): string | null | und
   );
 }
 
-function tokenDoFragmento(): string | null {
-  const params = new URLSearchParams(window.location.hash.slice(1));
-  return params.get("t");
+const fragmentosRejeitados = new Set<string>();
+
+/** Token do `#t=...` da URL, sem validar (null se ausente ou vazio). */
+export function tokenDoFragmento(): string | null {
+  const t = new URLSearchParams(window.location.hash.slice(1)).get("t");
+  return t ? t : null;
 }
 
-/** Token do organizador: o link `#t=...` tem prioridade sobre o armazenado. */
+/** Descarta um token de link que o servidor não aceitou como organizador. */
+export function rejeitarFragmento(token: string): void {
+  fragmentosRejeitados.add(token);
+  ouvintes.forEach((avisar) => avisar());
+}
+
+function fragmentoCandidato(): string | null {
+  const t = tokenDoFragmento();
+  return t !== null && !fragmentosRejeitados.has(t) ? t : null;
+}
+
+/** Token do organizador: um `#t=...` ainda não rejeitado tem prioridade sobre o armazenado. */
 export function useTokenAdmin(codigo: string): string | null | undefined {
   return useSyncExternalStore(
     assinar,
-    () => tokenDoFragmento() ?? lerToken("admin", codigo),
+    () => fragmentoCandidato() ?? lerToken("admin", codigo),
     () => undefined,
   );
 }

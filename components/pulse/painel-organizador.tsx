@@ -15,24 +15,37 @@ import { ListaPerguntas } from "@/components/pulse/lista-perguntas";
 import { Respondidas } from "@/components/pulse/respondidas";
 import { ResumoEstados } from "@/components/pulse/resumo-estados";
 import { Button } from "@/components/ui/button";
-import { salvarToken, useTokenAdmin } from "@/lib/armazenamento";
+import { rejeitarFragmento, salvarToken, tokenDoFragmento, useTokenAdmin } from "@/lib/armazenamento";
 import { useAgora } from "@/lib/use-agora";
 
 export function PainelOrganizador({ codigo }: { codigo: string }) {
   const adminToken = useTokenAdmin(codigo);
-
-  // Guarda o token do link de administração e tira o segredo da barra de endereço.
-  useEffect(() => {
-    const t = new URLSearchParams(window.location.hash.slice(1)).get("t");
-    if (t === null) return;
-    salvarToken("admin", codigo, t);
-    window.history.replaceState(null, "", window.location.pathname + window.location.search);
-  }, [codigo]);
-
   const visao = useQuery(
     api.sessoes.visao,
     adminToken === undefined ? "skip" : { codigo, adminToken: adminToken ?? undefined },
   );
+
+  // O token do link só é salvo depois que o servidor confirma o acesso de organizador;
+  // se for recusado, é descartado e o painel volta ao token salvo. Em ambos os casos
+  // o segredo sai da barra de endereço.
+  useEffect(() => {
+    if (!window.location.hash) return;
+    const limpar = () =>
+      window.history.replaceState(null, "", window.location.pathname + window.location.search);
+    const t = tokenDoFragmento();
+    if (t === null) {
+      limpar();
+      return;
+    }
+    if (visao === undefined || t !== adminToken) return;
+    if (visao?.acesso === "organizador") {
+      salvarToken("admin", codigo, t);
+      limpar();
+    } else {
+      limpar();
+      rejeitarFragmento(t);
+    }
+  }, [codigo, adminToken, visao]);
   const agora = useAgora();
 
   if (adminToken === undefined || visao === undefined) return <Carregando />;

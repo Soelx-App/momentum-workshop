@@ -41,7 +41,7 @@ Cada pessoa usa seu próprio backend de desenvolvimento. O plano Free permite at
 
 - Leia `AGENTS.md`. Use Node.js 22, instale com `pnpm install` e inicie tudo com `pnpm dev` na raiz do repositório. Não suba Next.js e Convex separadamente.
 - Antes de iniciar outro processo, verifique se o app já está rodando. Para testes de navegador, mantenha o processo ativo e informe a URL ao usuário. Não encerre o servidor após validar se o usuário ainda for testar.
-- Valide pelo roteiro do Pulse: crie uma sessão, entre como participante, envie uma pergunta e recarregue a página para confirmar a gravação. Se ficar em "Gravando...", confira os logs e a conexão com o backend. O Convex pode aguardar reconexão sem rejeitar a mutation. No modo local, encerrar `pnpm dev` também encerra o backend.
+- Valide pelo roteiro do Pulse: crie uma sessão, entre como participante, envie uma pergunta e recarregue a página para confirmar a gravação. Se um botão ficar em "Enviando..." ou "Entrando...", confira os logs e a conexão com o backend. O Convex pode aguardar reconexão sem rejeitar a mutation. No modo local, encerrar `pnpm dev` também encerra o backend.
 - Execute `pnpm check` antes de entregar. Não use `convex deploy` para validar desenvolvimento; esse comando pode publicar em produção. Nunca versione `.env.local` nem deploy keys.
 
 ## Branches
