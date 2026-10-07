@@ -11,6 +11,7 @@
 import type * as estados from "../estados.js";
 import type * as lib_acesso from "../lib/acesso.js";
 import type * as participantes from "../participantes.js";
+import type * as perguntas from "../perguntas.js";
 import type * as regras from "../regras.js";
 import type * as sessoes from "../sessoes.js";
 
@@ -24,6 +25,7 @@ declare const fullApi: ApiFromModules<{
   estados: typeof estados;
   "lib/acesso": typeof lib_acesso;
   participantes: typeof participantes;
+  perguntas: typeof perguntas;
   regras: typeof regras;
   sessoes: typeof sessoes;
 }>;
