@@ -4,6 +4,16 @@ Base mínima com Next.js, TypeScript, pnpm e Convex. Use Node.js 22 e pnpm 10 (`
 
 Sites dos times: [Alpha](https://momentum-workshop-alpha.vercel.app) e [Beta](https://momentum-workshop-beta.vercel.app). Cada site tem seu próprio banco de produção.
 
+## Pulse — criar e compartilhar uma sala
+
+Na página inicial, informe seu nome e clique em **Criar sala**. A página do organizador mostra o link público e permite copiá-lo para compartilhar com participantes. O acesso de organização fica salvo no mesmo navegador e é recuperado ao reabrir a página ou recarregar. O link público não concede acesso administrativo.
+
+Não é necessário criar uma conta. Limpar os dados do navegador remove a chave de organização; recuperação em outro navegador ainda não faz parte deste fluxo. Se o armazenamento local estiver bloqueado, a criação não será enviada. Uma tentativa que falhou pode ser recuperada sem criar outra sala.
+
+Esta entrega cobre a BET-22. O link público identifica a sala; a identificação e entrada de participantes serão implementadas na BET-23. Perguntas, votos e moods pertencem às próximas entregas.
+
+`pnpm test` executa os testes de criação, permissões, recuperação e compartilhamento. O diagnóstico da conexão na página inicial mantém o contador para validar leitura e escrita no Convex.
+
 ## Começar
 
 ```bash
