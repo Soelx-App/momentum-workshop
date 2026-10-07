@@ -1,6 +1,6 @@
 import { ConvexError, v } from "convex/values";
 import type { Doc, Id } from "./_generated/dataModel";
-import { mutation, query } from "./_generated/server";
+import { internalMutation, mutation, query } from "./_generated/server";
 import { estadoValidator } from "./estados";
 import {
   exigirOrganizador,
@@ -9,7 +9,7 @@ import {
   participantePorToken,
   sessaoPorCodigo,
 } from "./lib/acesso";
-import { LIMITES, textoValido } from "./regras";
+import { INATIVIDADE_MS, LIMITES, textoValido } from "./regras";
 
 const statusSessao = v.union(v.literal("aberta"), v.literal("encerrada"));
 
@@ -182,5 +182,23 @@ export const visao = query({
     };
     if (eu === null) return { acesso: "organizador" as const, ...conteudo };
     return { acesso: "participante" as const, eu: paraParticipanteVisao(eu), ...conteudo };
+  },
+});
+
+export const encerrarInativas = internalMutation({
+  args: {},
+  returns: v.number(),
+  handler: async (ctx) => {
+    const agora = Date.now();
+    const inativas = await ctx.db
+      .query("sessoes")
+      .withIndex("by_status_atividade", (q) =>
+        q.eq("status", "aberta").lt("ultimaAtividadeEm", agora - INATIVIDADE_MS),
+      )
+      .take(100);
+    for (const sessao of inativas) {
+      await ctx.db.patch("sessoes", sessao._id, { status: "encerrada", encerradaEm: agora });
+    }
+    return inativas.length;
   },
 });
