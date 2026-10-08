@@ -14,7 +14,7 @@ export function EncerrarSessao({ adminToken }: { adminToken: string }) {
 
   if (!confirmando) {
     return (
-      <Button variant="destructive" onClick={() => setConfirmando(true)}>
+      <Button variant="outline" onClick={() => setConfirmando(true)}>
         Encerrar sessão
       </Button>
     );
@@ -24,7 +24,7 @@ export function EncerrarSessao({ adminToken }: { adminToken: string }) {
       <p className="text-sm">
         Confirmar encerramento? Ninguém poderá entrar, perguntar, votar ou trocar de estado.
       </p>
-      <div className="flex gap-2">
+      <div className="flex flex-wrap gap-2">
         <Button
           variant="destructive"
           disabled={pendente}

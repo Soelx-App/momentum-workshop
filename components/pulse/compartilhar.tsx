@@ -1,7 +1,6 @@
 "use client";
 
 import { BotaoCopiar } from "@/components/pulse/botao-copiar";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export function Compartilhar({ codigo, adminToken }: { codigo: string; adminToken: string }) {
   const origem = typeof window === "undefined" ? "" : window.location.origin;
@@ -9,26 +8,22 @@ export function Compartilhar({ codigo, adminToken }: { codigo: string; adminToke
   const linkAdmin = `${origem}/s/${codigo}/organizador#t=${encodeURIComponent(adminToken)}`;
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Compartilhar</CardTitle>
-      </CardHeader>
-      <CardContent className="space-y-5">
+    <section aria-labelledby="convite-titulo" className="rounded-xl border bg-white p-5 sm:p-6">
+      <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
         <div className="space-y-2">
-          <p className="text-sm text-muted-foreground">Código da sessão</p>
-          <p className="font-mono text-4xl font-bold tracking-[0.3em]">{codigo}</p>
-          <p className="break-all text-sm">{linkParticipantes}</p>
-          <BotaoCopiar texto={linkParticipantes} rotulo="Copiar link dos participantes" />
+          <h2 id="convite-titulo" className="text-sm font-medium text-muted-foreground">Convide as pessoas para a sessão</h2>
+          <p className="font-mono text-3xl font-semibold tracking-[0.2em] sm:text-4xl" aria-label={`Código da sessão: ${codigo}`}>{codigo}</p>
+          <p className="text-sm text-muted-foreground">Compartilhe este código ou envie o link.</p>
         </div>
-        <div className="space-y-2 rounded-md border border-dashed p-3">
-          <p className="text-sm font-medium">Link de administração</p>
-          <p className="text-xs text-muted-foreground">
-            Use para abrir o painel em outro aparelho. Não compartilhe: quem tiver este link
-            administra a sessão.
-          </p>
+        <BotaoCopiar texto={linkParticipantes} rotulo="Copiar link dos participantes" />
+      </div>
+      <details className="mt-5 border-t pt-2">
+        <summary className="cursor-pointer rounded-sm text-sm text-muted-foreground">Acesso do organizador</summary>
+        <div className="space-y-3 pb-1 pt-2">
+          <p className="max-w-lg text-sm leading-relaxed text-muted-foreground">O link de administração permite abrir este painel em outro aparelho. Guarde só para você: quem tiver o link poderá administrar a sessão.</p>
           <BotaoCopiar texto={linkAdmin} rotulo="Copiar link de administração" />
         </div>
-      </CardContent>
-    </Card>
+      </details>
+    </section>
   );
 }

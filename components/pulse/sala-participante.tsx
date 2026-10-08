@@ -35,7 +35,7 @@ function SalaMembro({ token, visao }: { token: string; visao: VisaoParticipante 
   const agora = useAgora();
   const encerrada = visao.sessao.status === "encerrada";
   return (
-    <main className="mx-auto max-w-3xl space-y-6 px-4 py-6">
+    <main id="conteudo" className="mx-auto max-w-3xl space-y-6 px-5 py-10 sm:px-8 sm:py-12">
       <CabecalhoSessao sessao={visao.sessao} />
       {encerrada && <AvisoEncerrada />}
       <SeletorEstado token={token} eu={visao.eu} sessao={visao.sessao} agora={agora} />
@@ -45,6 +45,7 @@ function SalaMembro({ token, visao }: { token: string; visao: VisaoParticipante 
         acao={(p) => <BotaoVoto token={token} pergunta={p} desativado={encerrada} />}
       />
       <ListaParticipantes
+        recolhivel
         participantes={visao.participantes}
         referencia={instanteDeReferencia(visao.sessao, agora)}
       />

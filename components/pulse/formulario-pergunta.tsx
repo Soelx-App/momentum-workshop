@@ -18,23 +18,27 @@ export function FormularioPergunta({ token, desativado }: { token: string; desat
 
   async function enviar(evento: FormEvent<HTMLFormElement>) {
     evento.preventDefault();
+    if (!valido || pendente || desativado) return;
     const ok = await executar(() => enviarPergunta({ token, texto }));
     if (ok) setTexto("");
   }
 
   return (
-    <form onSubmit={enviar} className="space-y-2">
+    <form onSubmit={enviar} className="space-y-3 rounded-xl border bg-white p-5 sm:p-6">
       <Label htmlFor="pergunta">Sua pergunta</Label>
       <Textarea
         id="pergunta"
         value={texto}
         maxLength={LIMITES.pergunta}
         onChange={(e) => setTexto(e.target.value)}
-        disabled={desativado}
+        disabled={desativado || pendente}
+        placeholder="O que você gostaria de perguntar?"
+        aria-describedby="pergunta-limite"
+        required
         rows={3}
       />
       <div className="flex items-center justify-between">
-        <span className="text-xs text-muted-foreground">
+        <span id="pergunta-limite" className="text-xs text-muted-foreground">
           {texto.length}/{LIMITES.pergunta}
         </span>
         <Button type="submit" disabled={desativado || !valido || pendente}>

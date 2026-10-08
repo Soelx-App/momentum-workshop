@@ -7,7 +7,8 @@ import { LIMITES, textoValido } from "@/convex/regras";
 import { AvisoEncerrada } from "@/components/pulse/estados-simples";
 import { ErroAcao } from "@/components/pulse/erro-acao";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { PaginaFormulario } from "@/components/pulse/pagina-formulario";
+import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { salvarToken } from "@/lib/armazenamento";
@@ -22,6 +23,7 @@ export function EntrarNaSala({ sessao }: { sessao: SessaoVisao }) {
 
   async function enviar(evento: FormEvent<HTMLFormElement>) {
     evento.preventDefault();
+    if (!valido || pendente || sessao.status === "encerrada") return;
     await executar(async () => {
       const { token } = await entrar({ codigo: sessao.codigo, nome });
       salvarToken("participante", sessao.codigo, token);
@@ -29,17 +31,13 @@ export function EntrarNaSala({ sessao }: { sessao: SessaoVisao }) {
   }
 
   return (
-    <main className="mx-auto max-w-md px-4 py-10">
+    <PaginaFormulario titulo={sessao.nome} descricao={`Organizado por ${sessao.organizadorNome}. Você está no lugar certo.`}>
       <Card>
-        <CardHeader>
-          <CardTitle>{sessao.nome}</CardTitle>
-          <CardDescription>Organizado por {sessao.organizadorNome}</CardDescription>
-        </CardHeader>
         <CardContent>
           {sessao.status === "encerrada" ? (
-            <AvisoEncerrada />
+            <AvisoEncerrada visitante />
           ) : (
-            <form onSubmit={enviar} className="space-y-4">
+            <form onSubmit={enviar} className="space-y-6">
               <div className="space-y-2">
                 <Label htmlFor="nome">Seu nome</Label>
                 <Input
@@ -48,8 +46,13 @@ export function EntrarNaSala({ sessao }: { sessao: SessaoVisao }) {
                   maxLength={LIMITES.nomeParticipante}
                   onChange={(e) => setNome(e.target.value)}
                   autoComplete="name"
+                  required
+                  disabled={pendente}
+                  placeholder="Como podemos chamar você?"
+                  aria-describedby="nome-ajuda"
                 />
               </div>
+              <p id="nome-ajuda" className="text-sm text-muted-foreground">Seu nome aparece na sala. Até {LIMITES.nomeParticipante} caracteres.</p>
               <Button type="submit" className="w-full" disabled={!valido || pendente}>
                 {pendente ? "Entrando..." : "Entrar na sessão"}
               </Button>
@@ -58,6 +61,6 @@ export function EntrarNaSala({ sessao }: { sessao: SessaoVisao }) {
           )}
         </CardContent>
       </Card>
-    </main>
+    </PaginaFormulario>
   );
 }

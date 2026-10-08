@@ -30,6 +30,7 @@ export function SeletorEstado({
     <Card>
       <CardHeader>
         <CardTitle>Como você está?</CardTitle>
+        <p className="text-sm text-muted-foreground">Um toque para compartilhar com a sala.</p>
         {restantes !== null && (
           <CardDescription>Volta para Acompanhando em {restantes}s</CardDescription>
         )}
@@ -40,6 +41,7 @@ export function SeletorEstado({
             <Button
               key={e.valor}
               type="button"
+              className="text-xs first:col-span-2 sm:text-sm sm:first:col-span-1"
               variant={atual === e.valor ? "default" : "outline"}
               aria-pressed={atual === e.valor}
               disabled={encerrada || pendente}

@@ -1,28 +1,33 @@
 import Link from "next/link";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
+import { PaginaFormulario } from "@/components/pulse/pagina-formulario";
 
 export function Carregando() {
-  return <p className="p-10 text-center text-muted-foreground">Conectando…</p>;
-}
-
-export function SessaoNaoEncontrada() {
   return (
-    <main className="mx-auto max-w-md space-y-4 px-4 py-10 text-center">
-      <h1 className="text-2xl font-bold">Sessão não encontrada</h1>
-      <p className="text-muted-foreground">Confira o código com o organizador.</p>
-      <Button asChild>
-        <Link href="/">Voltar ao início</Link>
-      </Button>
+    <main id="conteudo" className="mx-auto max-w-lg px-5 py-20 text-center" role="status" aria-live="polite">
+      <span aria-hidden="true" className="mx-auto mb-5 block size-7 rounded-full border-2 border-muted border-t-foreground motion-safe:animate-spin" />
+      <h1 className="text-xl font-semibold">Abrindo a sessão…</h1>
+      <p className="mt-2 text-sm text-muted-foreground">Conectando à sala. Se demorar, confira sua conexão.</p>
     </main>
   );
 }
 
-export function AvisoEncerrada() {
+export function SessaoNaoEncontrada() {
   return (
-    <Alert>
+    <PaginaFormulario titulo="Sessão não encontrada." descricao="Confira o código com o organizador e tente novamente.">
+      <Button asChild><Link href="/entrar">Tentar outro código</Link></Button>
+    </PaginaFormulario>
+  );
+}
+
+export function AvisoEncerrada({ visitante = false }: { visitante?: boolean }) {
+  return (
+    <Alert className="bg-white">
       <AlertTitle>Sessão encerrada</AlertTitle>
-      <AlertDescription>O conteúdo continua visível, mas não aceita novas ações.</AlertDescription>
+      <AlertDescription>{visitante
+        ? "Este encontro já terminou e não aceita novos participantes. Peça um novo convite ao organizador."
+        : "O encontro terminou. Você pode consultar o conteúdo, mas não enviar perguntas, votar ou mudar seu estado."}</AlertDescription>
     </Alert>
   );
 }

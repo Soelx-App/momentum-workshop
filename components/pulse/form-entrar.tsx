@@ -1,72 +1,41 @@
 "use client";
 
-import { useMutation } from "convex/react";
 import { useRouter } from "next/navigation";
 import { useState, type FormEvent } from "react";
-import { api } from "@/convex/_generated/api";
-import { CODIGO_TAMANHO, LIMITES, normalizarCodigo, textoValido } from "@/convex/regras";
-import { ErroAcao } from "@/components/pulse/erro-acao";
+import { CODIGO_ALFABETO, CODIGO_TAMANHO, normalizarCodigo } from "@/convex/regras";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { salvarToken } from "@/lib/armazenamento";
-import { useAcao } from "@/lib/use-acao";
 
 export function FormEntrar() {
   const router = useRouter();
-  const entrar = useMutation(api.participantes.entrar);
-  const { pendente, erro, executar } = useAcao();
   const [codigo, setCodigo] = useState("");
-  const [nome, setNome] = useState("");
   const codigoNormalizado = normalizarCodigo(codigo);
-  const valido =
-    codigoNormalizado.length === CODIGO_TAMANHO &&
-    textoValido(nome, LIMITES.nomeParticipante) !== null;
+  const valido = codigoNormalizado.length === CODIGO_TAMANHO &&
+    [...codigoNormalizado].every((caractere) => CODIGO_ALFABETO.includes(caractere));
 
-  async function enviar(evento: FormEvent<HTMLFormElement>) {
+  function enviar(evento: FormEvent<HTMLFormElement>) {
     evento.preventDefault();
-    await executar(async () => {
-      const { token } = await entrar({ codigo: codigoNormalizado, nome });
-      salvarToken("participante", codigoNormalizado, token);
-      router.push(`/s/${codigoNormalizado}`);
-    });
+    if (!valido) return;
+    // A sala recupera a identidade salva antes de pedir o nome ou criar uma participação.
+    router.push(`/s/${codigoNormalizado}`);
   }
 
   return (
     <Card>
-      <CardHeader>
-        <CardTitle>Participante</CardTitle>
-        <CardDescription>Entre com o código que o organizador compartilhou.</CardDescription>
-      </CardHeader>
       <CardContent>
-        <form onSubmit={enviar} className="space-y-4">
-          <div className="space-y-2">
+        <form onSubmit={enviar} className="space-y-6">
+          <div className="space-y-2.5">
             <Label htmlFor="codigo">Código da sessão</Label>
-            <Input
-              id="codigo"
-              value={codigo}
-              maxLength={CODIGO_TAMANHO + 4}
+            <Input id="codigo" value={codigo} maxLength={CODIGO_TAMANHO + 4}
               onChange={(e) => setCodigo(e.target.value)}
-              className="font-mono uppercase tracking-widest"
-              autoComplete="off"
-              autoCapitalize="characters"
-            />
+              className="h-14 font-mono text-xl uppercase tracking-[0.25em] md:text-xl"
+              placeholder="ABC234" autoComplete="off" autoCapitalize="characters" spellCheck={false}
+              aria-describedby="codigo-ajuda" required />
+            <p id="codigo-ajuda" className="text-sm leading-relaxed text-muted-foreground">São 6 letras ou números. Se você já entrou neste navegador, retomamos sua participação.</p>
           </div>
-          <div className="space-y-2">
-            <Label htmlFor="participante-nome">Seu nome</Label>
-            <Input
-              id="participante-nome"
-              value={nome}
-              maxLength={LIMITES.nomeParticipante}
-              onChange={(e) => setNome(e.target.value)}
-              autoComplete="name"
-            />
-          </div>
-          <Button type="submit" className="w-full" disabled={!valido || pendente}>
-            {pendente ? "Entrando..." : "Entrar"}
-          </Button>
-          <ErroAcao mensagem={erro} />
+          <Button type="submit" className="w-full" disabled={!valido}>Continuar <span aria-hidden="true">→</span></Button>
         </form>
       </CardContent>
     </Card>

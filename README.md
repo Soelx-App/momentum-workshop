@@ -21,9 +21,9 @@ Mantenha esse terminal aberto enquanto usar o app. Abra http://localhost:3000, o
 
 O Pulse acompanha uma sala ao vivo: perguntas com votos e o estado de cada participante.
 
-1. Abra o site e, em **Organizador**, informe seu nome e o nome da sessão. Clique em **Criar sessão**.
+1. Abra o site, clique em **Criar sessão** e informe seu nome e o nome do encontro. Confirme em **Criar sessão**.
 2. No painel, copie o **link dos participantes** ou anote o **código** de 6 caracteres.
-3. Em outro navegador ou janela anônima, entre como **Participante** pelo código. Em uma terceira janela, entre pelo link.
+3. Em outro navegador ou janela anônima, escolha **Entrar em uma sessão**, informe o código e depois seu nome. Em uma terceira janela, entre pelo link. Ao retornar pelo código no mesmo navegador, sua participação é recuperada sem novo cadastro.
 4. Envie uma pergunta. Na outra janela, clique em **Votar** e depois em **Votado ✓** para retirar o voto. O ranking muda ao vivo.
 5. Escolha um estado (por exemplo, **Dúvida**). O organizador vê a mudança na hora, e o estado volta para **Acompanhando** após 1 minuto.
 6. No painel, clique em **Marcar respondida**. A pergunta sai da lista de todos e aparece em **Respondidas**.
