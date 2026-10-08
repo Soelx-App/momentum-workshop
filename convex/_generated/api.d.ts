@@ -9,7 +9,10 @@
  */
 
 import type * as counter from "../counter.js";
+import type * as collections from "../collections.js";
 import type * as lib_roomAccess from "../lib/roomAccess.js";
+import type * as moods from "../moods.js";
+import type * as questions from "../questions.js";
 import type * as rooms from "../rooms.js";
 
 import type {
@@ -20,7 +23,10 @@ import type {
 
 declare const fullApi: ApiFromModules<{
   counter: typeof counter;
+  collections: typeof collections;
   "lib/roomAccess": typeof lib_roomAccess;
+  moods: typeof moods;
+  questions: typeof questions;
   rooms: typeof rooms;
 }>;
 

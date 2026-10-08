@@ -19,7 +19,10 @@ describe("salas e acessos", () => {
     expect(stored?.adminTokenHash).not.toBe(token);
     expect(stored).not.toHaveProperty("adminToken");
     expect(await t.query(api.rooms.getAdmin, { roomId, adminToken: token })).toEqual({
-      status: "ok", room: { _id: roomId, organizerName: "Ana", _creationTime: stored?._creationTime },
+      status: "ok", room: {
+        _id: roomId, organizerName: "Ana", _creationTime: stored?._creationTime,
+        status: "waiting", moodIntervalMs: 60_000, currentCollectionNumber: 0,
+      },
     });
   });
 
@@ -46,7 +49,7 @@ describe("salas e acessos", () => {
   it("o acesso público retorna só a identificação, sem nome ou credenciais", async () => {
     const t = convexTest(schema, modules);
     const roomId = await t.mutation(api.rooms.create, { organizerName: "Ana", adminToken: token });
-    expect(await t.query(api.rooms.getPublic, { roomId })).toEqual({ _id: roomId });
+    expect(await t.query(api.rooms.getPublic, { roomId })).toEqual({ _id: roomId, status: "waiting" });
   });
 
   it("recusa administração com chave ausente, inválida ou de outra sala", async () => {

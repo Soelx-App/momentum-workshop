@@ -4,15 +4,19 @@ Base mínima com Next.js, TypeScript, pnpm e Convex. Use Node.js 22 e pnpm 10 (`
 
 Sites dos times: [Alpha](https://momentum-workshop-alpha.vercel.app) e [Beta](https://momentum-workshop-beta.vercel.app). Cada site tem seu próprio banco de produção.
 
-## Pulse — criar e compartilhar uma sala
+## Pulse — salas ao vivo
 
-Na página inicial, informe seu nome e clique em **Criar sala**. A página do organizador mostra o link público e permite copiá-lo para compartilhar com participantes. O acesso de organização fica salvo no mesmo navegador e é recuperado ao reabrir a página ou recarregar. O link público não concede acesso administrativo.
+Na página inicial, crie uma sala informando seu nome. O navegador guarda uma chave administrativa; compartilhe apenas o link de participantes. A chave não é armazenada no Convex, apenas seu hash. Não é necessário criar conta. Se os dados deste navegador forem apagados, o acesso administrativo não poderá ser recuperado nesta versão.
 
-Não é necessário criar uma conta. Limpar os dados do navegador remove a chave de organização; recuperação em outro navegador ainda não faz parte deste fluxo. Se o armazenamento local estiver bloqueado, a criação não será enviada. Uma tentativa que falhou pode ser recuperada sem criar outra sala.
+Participantes entram com nome. A comparação ignora maiúsculas/minúsculas e espaços nas pontas, preservando acentos. O mesmo navegador recupera sua identidade, votos e resposta atual de mood. Outro navegador não pode reutilizar um nome já ocupado.
 
-Esta entrega cobre a BET-22. O link público identifica a sala; a identificação e entrada de participantes serão implementadas na BET-23. Perguntas, votos e moods pertencem às próximas entregas.
+Antes de iniciar, participantes podem enviar perguntas públicas e votar. Cada pessoa só pode votar em perguntas de outras pessoas; o voto pode ser retirado enquanto a pergunta estiver aberta. O painel mostra totais sem identificar votantes. O organizador pode marcar perguntas como respondidas, o que congela os votos.
 
-`pnpm test` executa os testes de criação, permissões, recuperação e compartilhamento. O diagnóstico da conexão na página inicial mantém o contador para validar leitura e escrita no Convex.
+Ao iniciar a sessão, a primeira coleta de mood é aberta. Cada participante escolhe uma vez entre seis estados (0 a 5); a resposta não pode ser alterada até a próxima coleta. O intervalo padrão é de um minuto e pode ser configurado de 15 segundos a 60 minutos. O organizador também pode abrir uma nova coleta manualmente. Só o organizador vê estados individuais e o histórico de respostas; participantes veem apenas seu próprio estado enviado.
+
+O painel atualiza em tempo real. O gráfico mostra a média das respostas de cada coleta e uma lacuna quando não há respostas. Encerrar a sessão bloqueia novas entradas, perguntas, votos, respostas e alterações, mantendo o histórico consultável. Não há exclusão automática de salas nesta versão.
+
+`pnpm test` executa os testes de backend Convex e de interface em navegador simulado. `pnpm check` executa tipos, lint e build. O diagnóstico da conexão na página inicial mantém o contador para verificar leitura e escrita no Convex.
 
 ## Começar
 

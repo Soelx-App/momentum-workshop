@@ -1,6 +1,9 @@
 const pendingKey = "pulse:pending-room";
 const changeEvent = "pulse:credentials-changed";
 const roomKey = (roomId: string) => `pulse:room:${roomId}:admin`;
+const participantKey = (roomId: string) => `pulse:room:${roomId}:participant`;
+const participantNameKey = (roomId: string) => `pulse:room:${roomId}:participant-name`;
+const participantJoinedKey = (roomId: string) => `pulse:room:${roomId}:participant-joined`;
 
 type PendingRoom = { organizerName: string; adminToken: string; roomId?: string };
 export const storageError = "Não foi possível salvar seu acesso neste navegador. Permita o armazenamento local e tente novamente.";
@@ -60,4 +63,46 @@ export function roomCredentialSnapshot(roomId: string): string | null {
     const pending = parsePendingRoom(localStorage.getItem(pendingKey));
     return localStorage.getItem(roomKey(roomId)) ?? (pending?.roomId === roomId ? pending.adminToken : null);
   } catch { return null; }
+}
+
+export function participantCredentialSnapshot(roomId: string): string | null {
+  try {
+    const token = localStorage.getItem(participantKey(roomId));
+    return token && /^[a-f0-9]{64}$/.test(token) ? token : null;
+  } catch { return null; }
+}
+
+export function prepareParticipantCredential(roomId: string): string {
+  try {
+    const existing = participantCredentialSnapshot(roomId);
+    if (existing) return existing;
+    const token = Array.from(crypto.getRandomValues(new Uint8Array(32)), (byte) => byte.toString(16).padStart(2, "0")).join("");
+    localStorage.setItem(participantKey(roomId), token);
+    if (localStorage.getItem(participantKey(roomId)) !== token) throw new Error(storageError);
+    window.dispatchEvent(new Event(changeEvent));
+    return token;
+  } catch { throw new Error(storageError); }
+}
+
+export function participantNameSnapshot(roomId: string): string {
+  try { return localStorage.getItem(participantNameKey(roomId)) ?? ""; } catch { return ""; }
+}
+
+export function saveParticipantName(roomId: string, name: string) {
+  try {
+    localStorage.setItem(participantNameKey(roomId), name);
+    localStorage.removeItem(participantJoinedKey(roomId));
+    window.dispatchEvent(new Event(changeEvent));
+  } catch { throw new Error(storageError); }
+}
+
+export function markParticipantJoined(roomId: string) {
+  try {
+    localStorage.setItem(participantJoinedKey(roomId), "1");
+    window.dispatchEvent(new Event(changeEvent));
+  } catch { throw new Error(storageError); }
+}
+
+export function participantJoinedSnapshot(roomId: string): boolean {
+  try { return localStorage.getItem(participantJoinedKey(roomId)) === "1"; } catch { return false; }
 }
